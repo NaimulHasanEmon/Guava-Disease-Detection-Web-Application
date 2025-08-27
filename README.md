@@ -78,6 +78,18 @@ By Claude/
 - **Input Size**: 512x512 pixels
 - **Classes**: 6 disease categories + healthy
 
+### Hosting and API Setup
+
+- When hosting the frontend separately (Netlify/Vercel) and the backend (Render/Railway/Hugging Face), set the backend base URL in your HTML before loading `main.js`:
+  ```html
+  <script>window.API_BASE_URL = 'https://your-backend-service.onrender.com';</script>
+  <script src="/static/js/main.js"></script>
+  ```
+- The backend exposes two endpoints:
+  - `POST /predict` (for hosted frontends)
+  - `POST /upload` (for integrated/local app)
+- CORS is enabled to allow cross-origin requests from your frontend.
+
 ### Supported Image Formats
 
 - PNG, JPG, JPEG, GIF, BMP

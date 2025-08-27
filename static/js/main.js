@@ -1,4 +1,6 @@
 // Guava Disease Detection - Main JavaScript
+const API_BASE_URL = window.API_BASE_URL || '';
+
 class GuavaDiseaseDetector {
     constructor() {
         this.currentFile = null;
@@ -169,7 +171,8 @@ class GuavaDiseaseDetector {
             const formData = new FormData();
             formData.append('file', this.currentFile);
 
-            const response = await fetch('/upload', {
+            const endpoint = API_BASE_URL ? `${API_BASE_URL}/predict` : '/upload';
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 body: formData
             });

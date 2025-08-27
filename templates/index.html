@@ -232,6 +232,11 @@
         </footer>
     </div>
 
+    <script>
+        // Set API base URL when hosting frontend separately (e.g., Netlify/Vercel)
+        // Example: window.API_BASE_URL = 'https://your-backend-service.onrender.com';
+        window.API_BASE_URL = window.API_BASE_URL || '';
+    </script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

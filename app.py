@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask_cors import CORS
 import os
 import tensorflow as tf
 import numpy as np
@@ -9,6 +10,7 @@ import json
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
@@ -109,7 +111,14 @@ def load_model():
         traceback.print_exc()
         return None
 
-# Removed create_compatible_model function - we need the trained model
+MODEL = None
+
+def get_model():
+    """Return a singleton instance of the trained model, loading it if needed."""
+    global MODEL
+    if MODEL is None:
+        MODEL = load_model()
+    return MODEL
 
 def preprocess_image(image_path):
     """Preprocess image for model prediction - compatible with TensorFlow 2.18.0"""
@@ -181,7 +190,7 @@ def upload_file():
             
             # Load model and predict
             print("Loading model...")
-            model = load_model()
+            model = get_model()
             if model is None:
                 print("Model loading failed")
                 return jsonify({'error': 'Failed to load model. Check console for details.'}), 500
@@ -216,6 +225,18 @@ def upload_file():
         import traceback
         traceback.print_exc()
         return jsonify({'error': f'Server error: {str(e)}'}), 500
+
+@app.route('/predict', methods=['POST'])
+def predict_api():
+    """Alias endpoint intended for hosted frontend to call the model API."""
+    return upload_file()
+
+@app.route('/health', methods=['GET'])
+def health():
+    """Simple health check endpoint to verify service and model readiness."""
+    model_loaded = get_model() is not None
+    status = 'ok' if model_loaded else 'model_not_loaded'
+    return jsonify({'status': status, 'model_loaded': model_loaded}), 200 if model_loaded else 503
 
 @app.route('/disease-info/<disease_name>')
 def get_disease_info(disease_name):
