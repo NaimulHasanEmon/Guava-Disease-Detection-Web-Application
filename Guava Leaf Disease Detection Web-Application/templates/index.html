@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guava Disease Detection - AI-Powered Plant Health Analysis</title>
+    <meta name="description" content="Upload guava leaf images to detect diseases using advanced AI technology">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <span class="logo-icon">🥭</span>
+                        <h1 class="logo-text">Guava Disease Detection</h1>
+                    </div>
+                    <p class="header-subtitle">AI-powered plant health analysis for better crop management</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="two-column-layout">
+                <!-- Left Column: Upload Section -->
+                <div class="left-column">
+                    <section class="upload-section" id="uploadSection">
+                        <div class="upload-card">
+                            <div class="upload-area" id="uploadArea">
+                                <div class="upload-content">
+                                    <div class="upload-icon">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <h2 class="upload-title">Upload Guava Leaf Image</h2>
+                                    <p class="upload-description">
+                                        Drag and drop your image here, or click to select a file
+                                    </p>
+                                    <div class="upload-formats">
+                                        <span><i class="fas fa-check-circle"></i> Supported formats: PNG, JPG, JPEG, GIF, BMP</span>
+                                        <span><i class="fas fa-info-circle"></i> Maximum size: 16MB</span>
+                                    </div>
+                                    <input type="file" id="fileInput" accept="image/*" hidden>
+                                    <button class="upload-button" id="uploadButton">
+                                        <i class="fas fa-upload"></i>
+                                        Choose File
+                                    </button>
+                                </div>
+                                <div class="drag-overlay" id="dragOverlay">
+                                    <div class="drag-content">
+                                        <div class="drag-icon">
+                                            <i class="fas fa-cloud-download-alt"></i>
+                                        </div>
+                                        <p>Drop your image here</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Image Preview Section (separate from upload) -->
+                    <section class="image-preview-section" id="imagePreviewSection" style="display: none;">
+                        <div class="image-preview" id="imagePreview">
+                            <div class="preview-header">
+                                <h3><i class="fas fa-image"></i> Selected Image</h3>
+                                <button class="btn-secondary" id="changeImageBtn">
+                                    <i class="fas fa-edit"></i> Change Image
+                                </button>
+                            </div>
+                            <div class="preview-container">
+                                <img id="previewImage" alt="Selected image preview">
+                            </div>
+                            <div class="preview-actions">
+                                <button class="btn-primary" id="analyzeBtn">
+                                    <span class="btn-text">Analyze Image</span>
+                                    <span class="btn-icon">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column: Results Section -->
+                <div class="right-column">
+                    <!-- Welcome Section (shown initially and when image is uploaded) -->
+                    <section class="welcome-section" id="welcomeSection">
+                        <div class="welcome-card">
+                            <div class="welcome-icon">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <h3 class="welcome-title">Ready to Analyze</h3>
+                            <p class="welcome-description">
+                                Your image is ready! Click "Analyze Image" on the left to start disease detection analysis.
+                            </p>
+                            <div class="features-list">
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>AI-powered disease detection</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>95.4% accuracy</span>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Instant results</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Loading Section -->
+                    <section class="loading-section" id="loadingSection" style="display: none;">
+                        <div class="loading-card">
+                            <div class="loading-animation">
+                                <div class="spinner"></div>
+                            </div>
+                            <h3 class="loading-title">Analyzing Your Image</h3>
+                            <p class="loading-description">
+                                Our AI model is examining the leaf for signs of disease...
+                            </p>
+                            <div class="loading-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <span class="progress-text" id="progressText">Processing...</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Results Section -->
+                    <section class="results-section" id="resultsSection" style="display: none;">
+                        <div class="results-card">
+                            <div class="results-header">
+                                <h2 class="results-title">
+                                    <i class="fas fa-clipboard-check"></i> Analysis Results
+                                </h2>
+                                <button class="btn-secondary" id="newAnalysisBtn">
+                                    <i class="fas fa-plus"></i> New Analysis
+                                </button>
+                            </div>
+                            
+                            <div class="results-content">
+                                <div class="prediction-main">
+                                    <div class="prediction-card" id="predictionCard">
+                                        <div class="prediction-header">
+                                            <h3 class="prediction-title">Detected Condition</h3>
+                                            <div class="confidence-badge" id="confidenceBadge">
+                                                <span class="confidence-text">Confidence</span>
+                                                <span class="confidence-value" id="confidenceValue">0%</span>
+                                            </div>
+                                        </div>
+                                        <div class="prediction-result">
+                                            <div class="disease-icon" id="diseaseIcon">
+                                                <i class="fas fa-leaf"></i>
+                                            </div>
+                                            <h2 class="disease-name" id="diseaseName">Loading...</h2>
+                                            <div class="severity-indicator" id="severityIndicator">
+                                                <span class="severity-label">Severity:</span>
+                                                <span class="severity-value" id="severityValue">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="disease-details" id="diseaseDetails">
+                                    <div class="details-tabs">
+                                        <button class="tab-button active" data-tab="description">
+                                            <i class="fas fa-info-circle"></i> Description
+                                        </button>
+                                        <button class="tab-button" data-tab="symptoms">
+                                            <i class="fas fa-exclamation-triangle"></i> Symptoms
+                                        </button>
+                                        <button class="tab-button" data-tab="treatment">
+                                            <i class="fas fa-medkit"></i> Treatment
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="description">
+                                            <p id="descriptionText">Loading description...</p>
+                                        </div>
+                                        <div class="tab-pane" id="symptoms">
+                                            <p id="symptomsText">Loading symptoms...</p>
+                                        </div>
+                                        <div class="tab-pane" id="treatment">
+                                            <p id="treatmentText">Loading treatment...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Error Section -->
+                    <section class="error-section" id="errorSection" style="display: none;">
+                        <div class="error-card">
+                            <div class="error-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="error-title">Something went wrong</h3>
+                            <p class="error-message" id="errorMessage">An error occurred while processing your image.</p>
+                            <button class="btn-primary" id="tryAgainBtn">
+                                <i class="fas fa-redo"></i> Try Again
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <p>&copy; 2024 Guava Disease Detection. Powered by AI technology.</p>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">About</a>
+                        <a href="#" class="footer-link">Privacy</a>
+                        <a href="#" class="footer-link">Terms</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
