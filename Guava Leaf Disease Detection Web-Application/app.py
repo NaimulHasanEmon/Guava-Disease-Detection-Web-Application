@@ -74,10 +74,9 @@ def allowed_file(filename):
 def load_model():
     """Load the trained model - now compatible with TensorFlow 2.18.0 and Keras 3.8.0"""
     try:
-        # Try multiple possible paths for the model
+        # Try multiple possible paths for the model (updated location inside this project)
         possible_paths = [
-            os.path.join('..', 'Model Info', 'best_guava_model.h5'),  # From By Claude folder (preferred)
-            os.path.join('Model Info', 'best_guava_model.h5'),        # From root folder
+            os.path.join('Model Info', 'best_guava_model.h5'),        # Inside web-app folder
             'best_guava_model.h5',                                     # Current directory
             'converted_guava_model.h5'                                # Converted model (fallback)
         ]
@@ -232,7 +231,6 @@ def get_model_stats():
     try:
         # Read training history
         history_paths = [
-            os.path.join('..', 'Model Info', 'training_history.csv'),
             os.path.join('Model Info', 'training_history.csv'),
             'training_history.csv'
         ]
@@ -248,7 +246,6 @@ def get_model_stats():
         
         # Read classification report
         report_paths = [
-            os.path.join('..', 'Model Info', 'classification_report.csv'),
             os.path.join('Model Info', 'classification_report.csv'),
             'classification_report.csv'
         ]

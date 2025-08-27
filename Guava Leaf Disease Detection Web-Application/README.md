@@ -34,7 +34,7 @@ A modern, responsive web application that uses advanced AI technology to detect 
    ```
 
 4. **Ensure model file exists**:
-   - Make sure `best_guava_model.h5` is in the `Model Info` folder (one level up)
+   - Make sure `best_guava_model.h5` is in the `Model Info` folder inside this web-app directory
    - The model file should be approximately 206MB
 
 5. **Run the application**:
@@ -73,7 +73,7 @@ By Claude/
 ### Model Requirements
 
 - **Model File**: `best_guava_model.h5` (206MB)
-- **Location**: `../Model Info/best_guava_model.h5`
+- **Location**: `Model Info/best_guava_model.h5`
 - **Architecture**: EfficientNetV2
 - **Input Size**: 512x512 pixels
 - **Classes**: 6 disease categories + healthy
@@ -148,7 +148,7 @@ The system can detect the following conditions:
 ### Common Issues
 
 1. **Model Loading Error**
-   - Ensure `best_guava_model.h5` exists in `../Model Info/`
+   - Ensure `best_guava_model.h5` exists in `Model Info/`
    - Check TensorFlow version compatibility
    - Verify file permissions
 

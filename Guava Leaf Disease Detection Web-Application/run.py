@@ -24,7 +24,7 @@ def check_dependencies():
 
 def check_model():
     """Check if the model file exists"""
-    model_path = os.path.join('..', 'Model Info', 'best_guava_model.h5')
+    model_path = os.path.join('Model Info', 'best_guava_model.h5')
     if os.path.exists(model_path):
         print("✅ Model file found!")
         return True
