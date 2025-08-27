@@ -221,5 +221,3 @@ If you encounter any issues:
 4. Check browser console for JavaScript errors
 
 ---
-
-**Built with ❤️ using Flask, TensorFlow, and modern web technologies**
