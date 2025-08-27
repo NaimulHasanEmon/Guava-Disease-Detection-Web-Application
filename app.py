@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 import tensorflow as tf
+from tensorflow import keras
 import numpy as np
 from PIL import Image
 import io
@@ -88,7 +89,7 @@ def load_model():
                 print(f"Loading model from: {model_path}")
                 try:
                     # With TensorFlow 2.18.0 and Keras 3.8.0, the model should load directly
-                    model = tf.keras.models.load_model(model_path, compile=False)
+                    model = keras.models.load_model(model_path, compile=False)
                     print("✅ Model loaded successfully!")
                     print(f"   Model input shape: {model.input_shape}")
                     print(f"   Model output shape: {model.output_shape}")
@@ -130,7 +131,7 @@ def preprocess_image(image_path):
         image = tf.cast(image, tf.float32)
         
         # Apply EfficientNetV2 preprocessing
-        image = tf.keras.applications.efficientnet_v2.preprocess_input(image)
+        image = keras.applications.efficientnet_v2.preprocess_input(image)
         image = tf.expand_dims(image, 0)  # Add batch dimension
         
         return image
